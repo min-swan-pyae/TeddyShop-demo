@@ -1,13 +1,31 @@
 import React from "react";
-import products from "../products";
+import { useState, useEffect } from "react";
 import { Row, Col, Image, ListGroup, Button, Card } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import axios from "axios";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const product = products.find((product) => product._id === productId);
+  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState({});
+
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     const { data } = await axios.get("/api/products");
+  //     setProducts(data);
+  //   };
+  //   fetchProducts();
+  // }, []);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${productId}`);
+      setProduct(data);
+    };
+    fetchProduct();
+  }, [productId]);
 
   return (
     <div>
@@ -16,13 +34,13 @@ const ProductScreen = () => {
           <FaArrowLeft />
         </Button>
       </Link>
-      <Link to={`/product/${Number(productId) + 1}`} className="float-end">
+      {/* <Link to={`/product/${Number(productId) + 1}`} className="float-end">
         {productId < products.length && (
           <Button variant="success my-3">
             <FaArrowRight />
           </Button>
         )}
-      </Link>
+      </Link> */}
       <Row>
         <Col md={5}>
           <Image src={product.image} alt={product.name} fluid />

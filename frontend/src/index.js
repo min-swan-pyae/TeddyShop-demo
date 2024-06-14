@@ -14,6 +14,8 @@ import {
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 
+// using proxy in package.json so that we don't need to always type the url for it
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
