@@ -8,7 +8,7 @@ import axios from "axios";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
 
   // useEffect(() => {
