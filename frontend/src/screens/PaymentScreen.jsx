@@ -16,7 +16,7 @@ const PaymentScreen = () => {
   const { shippingAddress } = cart;
 
   useEffect(() => {
-    //check if shipping adress is empty
+    //check if shipping adress is empty so you can't directly go to /payment
     const isShippingAddressEmpty =
       !shippingAddress ||
       !shippingAddress.address ||
