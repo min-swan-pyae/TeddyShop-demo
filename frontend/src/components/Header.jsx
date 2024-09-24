@@ -37,7 +37,8 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto"> {userInfo && userInfo.isAdmin && (<NavDropdown title="Admin" id="adminUser" style={{fontSize:"20px", fontWeight:"bolder"}}>
+            <Nav className="ms-auto"> {userInfo && userInfo.isAdmin && (
+            <NavDropdown title="Admin" id="adminUser" style={{fontSize:"20px", fontWeight:"bolder"}}>
               <LinkContainer to="/admin/productlist">
                 <NavDropdown.Item>Products</NavDropdown.Item>
               </LinkContainer>

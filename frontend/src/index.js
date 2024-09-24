@@ -27,8 +27,11 @@ import PlaceOrderScreen from "./screens/PlaceOrderScreen.jsx";
 import OrderScreen from "./screens/OrderScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 import OrderListScreen from "./screens/admin/OrderListScreen.jsx";
+import ProductListScreen from "./screens/admin/ProductListScreen.jsx";
+import UserListScreen from "./screens/admin/UserListScreen.jsx";
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store.js'; // Assuming you configured redux-persist
+
 
 
 // using proxy in package.json so that we don't need to always type the backend url for it
@@ -53,6 +56,8 @@ const router = createBrowserRouter(
 
       <Route path="" element={<AdminRoute/>}>
         <Route path="/admin/orderlist" element={<OrderListScreen/>}></Route>
+        <Route path="/admin/productlist" element={<ProductListScreen/>}></Route>
+        <Route path="/admin/userlist" element={<UserListScreen/>}></Route>
       </Route>
     </Route>
 )

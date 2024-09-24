@@ -35,6 +35,15 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
+              <div className="custom_slider" style={ { "--width": "285px", "--height": "410px", "--quantity": 6 } }>
+                <div className="list">
+                  { products.map((product,index) => (
+                    <Col key={ product._id } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 } style={{"--position":index+1}} className="item">
+                      <Product product={ product } className="img"/>
+                    </Col>
+                  )) }
+                </div>
+              </div>
         </>
       )}
     </>

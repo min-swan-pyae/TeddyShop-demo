@@ -9,6 +9,7 @@ import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
   useGetPayPalClientIdQuery,
+  useDeliverOrderMutation
 } from "../slices/orderApiSlice";
 import { toast } from "react-toastify";
 
@@ -23,12 +24,15 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
   const {
     data: paypal,
     isLoading: loadingPayPal,
     error: errorPayPal,
   } = useGetPayPalClientIdQuery();
+
+
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -94,70 +98,81 @@ const OrderScreen = () => {
       });
   }
 
+  const deliverOrderHandler = async () => {
+    try {
+      await deliverOrder(orderId);
+      refetch();
+      toast.success("Order delivered");
+    }
+    catch (err) {
+      toast.error(err?.data?.message || err.message)
+   }
+  }
+
   return isLoading ? (
     <Loader />
   ) : error ? (
     <Message variant="danger" />
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h1>Order { order._id }</h1>
       <Row>
-        <Col md={8}>
+        <Col md={ 8 }>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Name: </strong> {order.user.name}
+                <strong>Name: </strong> { order.user.name }
               </p>
               <p>
-                <strong>Email: </strong> {order.user.email}
+                <strong>Email: </strong> { order.user.email }
               </p>
               <p>
-                <strong>Address: </strong> {order.shippingAddress.address},
-                {order.shippingAddress.city}
-                {order.shippingAddress.postalCode},
-                {order.shippingAddress.country}
+                <strong>Address: </strong> { order.shippingAddress.address },
+                { order.shippingAddress.city }
+                { order.shippingAddress.postalCode },
+                { order.shippingAddress.country }
               </p>
-              {order.isDelivered ? (
+              { order.isDelivered ? (
                 <Message variant="success">
-                  Delivered on {order.deliveredAt}
+                  Delivered on { order.deliveredAt }
                 </Message>
               ) : (
                 <Message variant="danger">Not Delivered ❌❌</Message>
-              )}
+              ) }
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>
               <p>
-                <strong>Method: </strong> {order.paymentMethod}
+                <strong>Method: </strong> { order.paymentMethod }
               </p>
-              {order.isPaid ? (
-                <Message variant="success">Paid on {order.paidAt}</Message>
+              { order.isPaid ? (
+                <Message variant="success">Paid on { order.paidAt }</Message>
               ) : (
                 <Message variant="danger">Not Paid❌❌</Message>
-              )}
+              ) }
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.orderItems.map((item, index) => (
-                <ListGroup.Item key={index}>
+              { order.orderItems.map((item, index) => (
+                <ListGroup.Item key={ index }>
                   <Row>
-                    <Col md={1}>
-                      <Image src={item.image} alt={item.name} fluid rounded />
+                    <Col md={ 1 }>
+                      <Image src={ item.image } alt={ item.name } fluid rounded />
                     </Col>
                     <Col>
-                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                      <Link to={ `/product/${item.product}` }>{ item.name }</Link>
                     </Col>
-                    <Col md={4}>
-                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                    <Col md={ 4 }>
+                      { item.qty } x ${ item.price } = ${ item.qty * item.price }
                     </Col>
                   </Row>
                 </ListGroup.Item>
-              ))}
+              )) }
             </ListGroup.Item>
           </ListGroup>
         </Col>
-        <Col md={4}>
+        <Col md={ 4 }>
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
@@ -166,47 +181,53 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>{order.itemsPrice}</Col>
+                  <Col>{ order.itemsPrice }</Col>
                 </Row>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>{order.shippingPrice}</Col>
+                  <Col>{ order.shippingPrice }</Col>
                 </Row>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>{order.taxPrice}</Col>
+                  <Col>{ order.taxPrice }</Col>
                 </Row>
                 <Row>
                   <Col>Total</Col>
-                  <Col>{order.totalPrice}</Col>
+                  <Col>{ order.totalPrice }</Col>
                 </Row>
               </ListGroup.Item>
-              {/* PAY ORDER PLACEHOLDER */}
-              {!order.isPaid && (
+              {/* PAY ORDER PLACEHOLDER */ }
+                  { !order.isPaid && (order.user.email == userInfo.email)&&(
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
-                  {isPending ? (
+                  { loadingPay && <Loader /> }
+                  { isPending ? (
                     <Loader />
                   ) : (
                     <div>
                       <Button
-                        onClick={onApproveTest}
-                        style={{ marginBottom: "10px" }}
+                        onClick={ onApproveTest }
+                        style={ { marginBottom: "10px" } }
                       >
                         Test Pay Order
                       </Button>
                       <div>
                         <PayPalButtons
-                          createOrder={createOrder}
-                          onApprove={onApprove}
-                          onError={onError}
+                          createOrder={ createOrder }
+                          onApprove={ onApprove }
+                          onError={ onError }
                         ></PayPalButtons>
                       </div>
                     </div>
-                  )}
+                  ) }
                 </ListGroup.Item>
-              )}
-              {/* MARK AS DELIVERED PLACEHOLDER */}
+              ) }
+              {/* MARK AS DELIVERED PLACEHOLDER */ }
+              { loadingDeliver && <Loader /> }
+              { userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <ListGroup.Item>
+                      <Button type="button" className="btn btn-success" onClick={deliverOrderHandler}>Mark as Delivered</Button>
+                </ListGroup.Item>
+              ) }
             </ListGroup>
           </Card>
         </Col>
