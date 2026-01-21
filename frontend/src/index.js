@@ -29,8 +29,10 @@ import ProfileScreen from "./screens/ProfileScreen.jsx";
 import OrderListScreen from "./screens/admin/OrderListScreen.jsx";
 import ProductListScreen from "./screens/admin/ProductListScreen.jsx";
 import UserListScreen from "./screens/admin/UserListScreen.jsx";
+import ProductEditScreen from "./screens/admin/ProductEditScreen.jsx";
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store.js'; // Assuming you configured redux-persist
+
 
 
 
@@ -57,7 +59,10 @@ const router = createBrowserRouter(
       <Route path="" element={<AdminRoute/>}>
         <Route path="/admin/orderlist" element={<OrderListScreen/>}></Route>
         <Route path="/admin/productlist" element={<ProductListScreen/>}></Route>
-        <Route path="/admin/userlist" element={<UserListScreen/>}></Route>
+        <Route path="/admin/userlist" element={ <UserListScreen /> }></Route>
+        <Route path="/admin/product/:id/edit" element={ <ProductEditScreen /> }></Route>
+        <Route path="/admin/user/:id/edit" element={<ProductEditScreen/>}></Route>
+        
       </Route>
     </Route>
 )

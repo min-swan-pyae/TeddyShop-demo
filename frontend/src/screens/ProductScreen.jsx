@@ -18,6 +18,7 @@ import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { addToCart } from "../slices/cartSlice";
+import { useEffect } from "react";
 
 const ProductScreen = () => {
   // const [products, setProducts] = useState([]);
@@ -47,6 +48,7 @@ const ProductScreen = () => {
     data: product,
     isLoading,
     error,
+    refetch
   } = useGetProductDetailsQuery(productId);
 
   const addToCartHandler = () => {
@@ -61,11 +63,11 @@ const ProductScreen = () => {
           <FaArrowLeft />
         </Button>
       </Link>
-      {isLoading ? (
+      { isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">
-          {error?.data?.message || error.error}
+          { error?.data?.message || error.error }
         </Message>
       ) : (
         <div>
@@ -77,27 +79,27 @@ const ProductScreen = () => {
         )}
       </Link> */}
           <Row>
-            <Col md={5}>
-              <Image src={product.image} alt={product.name} fluid />
+            <Col md={ 5 }>
+              <Image src={ product.image } alt={ product.name } fluid />
             </Col>
-            <Col md={4}>
+            <Col md={ 4 }>
               <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <h2 className="text-success">{product.name}</h2>
+                  <h2 className="text-success">{ product.name }</h2>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <h4 className="text-success">Description</h4>{" "}
-                  <p>{product.description}</p>
+                  <h4 className="text-success">Description</h4>{ " " }
+                  <p>{ product.description }</p>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
-                    value={product.rating}
-                    text={`Total Reviews: ${product.numReviews}`}
+                    value={ product.rating }
+                    text={ `Total Reviews: ${product.numReviews}` }
                   />
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+            <Col md={ 3 }>
               <Card>
                 <ListGroup>
                   <ListGroup.Item>
@@ -107,7 +109,7 @@ const ProductScreen = () => {
                       </Col>
                       <Col>
                         <strong className="text-success">
-                          ${product.price}
+                          ${ product.price }
                         </strong>
                       </Col>
                     </Row>
@@ -119,45 +121,45 @@ const ProductScreen = () => {
                       </Col>
                       <Col>
                         <strong className="text-success">
-                          {product.countInStock > 0
+                          { product.countInStock > 0
                             ? "In stock"
-                            : "Out of stock"}
+                            : "Out of stock" }
                         </strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  {product.countInStock > 0 && (
+                  { product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
                         <Col>
-                          {/* By default, <Form.Control /> renders an <input /> element. However, by specifying as="select", you are instructing the component to render a <select /> element instead. */}
+                          {/* By default, <Form.Control /> renders an <input /> element. However, by specifying as="select", you are instructing the component to render a <select /> element instead. */ }
                           <Form.Control
                             as="select"
-                            value={qty}
-                            onChange={(e) => setQty(Number(e.target.value))}
+                            value={ qty }
+                            onChange={ (e) => setQty(Number(e.target.value)) }
                           >
-                            {/* So, Array(10).keys() creates an iterator that goes from 0 to 9, and the spread operator (...) converts this iterator into an array [0,1,2,3,4,5,6,7,8,9] */}
-                            {[...Array(product.countInStock).keys()].map(
+                            {/* So, Array(10).keys() creates an iterator that goes from 0 to 9, and the spread operator (...) converts this iterator into an array [0,1,2,3,4,5,6,7,8,9] */ }
+                            { [...Array(product.countInStock).keys()].map(
                               (x) => (
-                                <option key={x + 1} value={x + 1}>
-                                  {x + 1}
+                                <option key={ x + 1 } value={ x + 1 }>
+                                  { x + 1 }
                                 </option>
                               )
-                            )}
+                            ) }
                           </Form.Control>
                         </Col>
                       </Row>
                     </ListGroup.Item>
-                  )}
+                  ) }
                   <ListGroup.Item>
                     <Row>
                       <Col></Col>
                       <Col>
                         <Button
                           className="btn-outline-success"
-                          disabled={product.countInStock === 0}
-                          onClick={addToCartHandler}
+                          disabled={ product.countInStock === 0 }
+                          onClick={ addToCartHandler }
                         >
                           Add To Cart
                         </Button>
@@ -169,7 +171,7 @@ const ProductScreen = () => {
             </Col>
           </Row>
         </div>
-      )}
+      ) }
     </>
   );
 };

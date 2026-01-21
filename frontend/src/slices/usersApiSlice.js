@@ -30,9 +30,37 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method:"PUT",
         body:data
       })
-    })
+    }),
+    getUsers: builder.query({
+      query: () => ({
+        url: `${USERS_URL}`,
+        method: 'GET',
+      }),
+      providesTags: ['User'],
+    }),
+    getUserDetails: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: 'GET',
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['User'],
+    }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/${data.userId}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['User'],
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation,useProfileMutation } =
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation,useProfileMutation,useGetUsersQuery,useDeleteUserMutation,useUpdateUserMutation } =
   usersApiSlice;

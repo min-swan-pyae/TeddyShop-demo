@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-success">
+    <footer className="bg-success m-0">
       <Container>
         <Row>
           <Col className="text-center py-3">
